@@ -130,4 +130,134 @@ end)
 showBtn.MouseButton1Click:Connect(function()
  frame.Visible = true
  showBtn.Visible = false
+end) 
+
+
+-- ======= Полностью обновлённое меню полезных скриптов =======
+
+local scriptList = {
+    ["R4d"] = [[
+loadstring(game:HttpGet('https://raw.githubusercontent.com/M1ZZ001/BrookhavenR4D/main/Brookhaven%20R4D%20Script'))()
+]],
+    ["Baganiy antioders Scripters Hub"] = [[
+loadstring(game:HttpGet('https://raw.githubusercontent.com/baganiy/scriptBaganiyHub/refs/heads/main/baganiyScriptHub.lua'))()
+]],
+    ["Click to TP"] = [[
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+mouse.Button1Down:Connect(function()
+    local pos = mouse.Hit.p
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(pos + Vector3.new(0, 3, 0))
+    end
+end)
+]],
+    ["Soluna Hub (FE Sound)"] = [[
+loadstring(game:HttpGet("https://soluna-script.vercel.app/brookhaven.lua",true))("https://t.me/RHOSCRIPTS")
+]],
+    ["Antioder Fly"] = [[
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aftermath-dev/aftermath-hubs/refs/heads/main/fly"))()
+]]
+}
+
+-- Получаем позицию и размер кнопки Execute (замени executeBtn на свою переменную если нужно)
+local executePos = executeBtn.Position
+local executeSize = executeBtn.Size
+
+-- Кнопка открытия меню (под кнопкой Execute)
+local menuBtn = Instance.new("TextButton")
+menuBtn.Name = "MenuBtn"
+menuBtn.Size = UDim2.new(0, 160, 0, 30)
+menuBtn.Position = UDim2.new(
+    executePos.X.Scale,
+    executePos.X.Offset,
+    executePos.Y.Scale,
+    executePos.Y.Offset + executeSize.Y.Offset + 10 -- 10 пикселей ниже Execute
+)
+menuBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+menuBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+menuBtn.Font = Enum.Font.GothamMedium
+menuBtn.TextScaled = true
+menuBtn.Text = "Меню полезных скриптов"
+menuBtn.Parent = frame
+menuBtn.ZIndex = 1000
+
+-- Главное меню Frame
+local menuFrame = Instance.new("Frame")
+menuFrame.Name = "MenuFrame"
+menuFrame.Size = UDim2.new(0, 350, 0, 260)
+menuFrame.Position = UDim2.new(0.5, -175, 0.5, -130)
+menuFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+menuFrame.BorderSizePixel = 2
+menuFrame.BorderColor3 = Color3.fromRGB(255, 255, 255)
+menuFrame.Visible = false
+menuFrame.Parent = gui
+menuFrame.ZIndex = 1100
+
+-- Заголовок меню
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, -90, 0, 35) -- ширина с запасом под кнопку закрытия
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextScaled = true
+titleLabel.Text = "Меню полезных скриптов"
+titleLabel.Parent = menuFrame
+titleLabel.ZIndex = 1101
+
+-- Кнопка закрытия меню
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 80, 0, 30)
+closeBtn.Position = UDim2.new(1, -85, 0, 2) -- справа, чуть ниже текста
+closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextScaled = true
+closeBtn.Text = "Закрыть"
+closeBtn.Parent = menuFrame
+closeBtn.ZIndex = 1101
+
+-- Скролл для списка скриптов
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, -20, 1, -50)
+scroll.Position = UDim2.new(0, 10, 0, 40)
+scroll.CanvasSize = UDim2.new(0, 0, 0, #scriptList * 45)
+scroll.ScrollBarThickness = 8
+scroll.BackgroundTransparency = 1
+scroll.Parent = menuFrame
+scroll.ZIndex = 1101
+
+-- Создаем кнопки для каждого скрипта
+local yPos = 0
+for name, code in pairs(scriptList) do
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.Position = UDim2.new(0, 5, 0, yPos)
+    btn.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+    btn.Font = Enum.Font.Gotham
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextScaled = true
+    btn.Text = name .. "  ▶"
+    btn.Parent = scroll
+    btn.ZIndex = 1102
+
+    btn.MouseButton1Click:Connect(function()
+        textBox.Text = code
+        menuFrame.Visible = false
+    end)
+
+    yPos = yPos + 45
+end
+
+-- Переключение видимости меню по кнопке
+menuBtn.MouseButton1Click:Connect(function()
+    menuFrame.Visible = not menuFrame.Visible
+end)
+
+-- Закрытие меню по кнопке внутри
+closeBtn.MouseButton1Click:Connect(function()
+    menuFrame.Visible = false
 end)

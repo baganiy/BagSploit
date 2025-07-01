@@ -260,4 +260,52 @@ end)
 -- Закрытие меню по кнопке внутри
 closeBtn.MouseButton1Click:Connect(function()
     menuFrame.Visible = false
-end)
+end) 
+
+-- 📛 Бейдж "по фэншую" в угол экрана
+local function ShowBadge(text, iconId)
+ local gui = Instance.new("ScreenGui", game.CoreGui)
+ gui.Name = "BaganiyBadgeNotify"
+
+ local frame = Instance.new("Frame")
+ frame.Size = UDim2.new(0, 320, 0, 60)
+ frame.Position = UDim2.new(1, -330, 1, 10)
+ frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+ frame.AnchorPoint = Vector2.new(0, 1)
+ frame.BorderSizePixel = 0
+ frame.Parent = gui
+
+ local uicorner = Instance.new("UICorner", frame)
+ uicorner.CornerRadius = UDim.new(0, 8)
+
+ local icon = Instance.new("ImageLabel", frame)
+ icon.Size = UDim2.new(0, 50, 0, 50)
+ icon.Position = UDim2.new(0, 5, 0.5, -25)
+ icon.BackgroundTransparency = 1
+ icon.Image = iconId or "rbxassetid://129895744043184"
+ icon.ScaleType = Enum.ScaleType.Fit
+
+ local label = Instance.new("TextLabel", frame)
+ label.Position = UDim2.new(0, 60, 0, 0)
+ label.Size = UDim2.new(1, -65, 1, 0)
+ label.BackgroundTransparency = 1
+ label.TextColor3 = Color3.new(1, 1, 1)
+ label.Font = Enum.Font.GothamSemibold
+ label.TextScaled = true
+ label.Text = text
+ label.TextXAlignment = Enum.TextXAlignment.Left
+ label.TextYAlignment = Enum.TextYAlignment.Center
+
+ -- Появление
+ frame:TweenPosition(UDim2.new(1, -330, 1, -10), "Out", "Back", 0.5)
+
+ -- Удаление
+ task.delay(5, function()
+  frame:TweenPosition(UDim2.new(1, -330, 1, 60), "In", "Sine", 0.4)
+  task.wait(0.4)
+  gui:Destroy()
+ end)
+end
+
+-- Вызов:
+ShowBadge("✅ by baganiy antioders, injector BagSploit for enjoy!", "rbxassetid://129895744043184")
